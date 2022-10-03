@@ -131,14 +131,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="2PlayerPacMan.cpp" />
+    <ClCompile Include="Maze.cpp" />
+    <ClCompile Include="MainPacman.cpp" />
+    <ClCompile Include="Players.cpp" />
+    <ClCompile Include="Score.cpp" />
+    <ClCompile Include="testAllegro.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="Maze.h" />
+    <ClInclude Include="Players.h" />
+    <ClInclude Include="Score.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
