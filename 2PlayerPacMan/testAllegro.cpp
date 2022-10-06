@@ -5,7 +5,7 @@
 #include <allegro5\allegro5.h>
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_ttf.h>
-
+/*
 int main()
 {
     std::cout << "Hello World!\n";
@@ -32,3 +32,4 @@ int main()
 
     return 0;
 }
+*/
