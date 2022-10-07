@@ -18,26 +18,13 @@ Game::Game()
 
 	al_init_image_addon();
 
-	curFrame = 0;
-	frameCount = 0;
-	frameDelay = 10;
+	p1 = Pacman("Male");
+	p1.SetX(50);
+	p1.SetY(50);
 
-	image.push_back(al_load_bitmap("Assets/Male/L/Stand/Stand0.png"));
-	image.push_back(al_load_bitmap("Assets/Male/L/Stand/Stand1.png"));
-	image.push_back(al_load_bitmap("Assets/Male/L/Stand/Stand2.png"));
-	image.push_back(al_load_bitmap("Assets/Male/L/Stand/Stand3.png"));
-
-	p1 = al_load_bitmap("Assets/Male/L/Stand/Stand1.png");
-	p2 = al_load_bitmap("Assets/DinoR/L/Stand/Stand0.png");
-	g1 = al_load_bitmap("Assets/DinoB/L/Stand/Stand0.png");
-	g2 = al_load_bitmap("Assets/DinoY/L/Stand/Stand0.png");
-	g3 = al_load_bitmap("Assets/DinoG/L/Stand/Stand0.png");
-
-	assert(p1 != NULL);
-	assert(p2 != NULL);
-	assert(g1 != NULL);
-	assert(g2 != NULL);
-	assert(g3 != NULL);
+	p2 = Ghost("DinoR");
+	p2.SetX(500);
+	p2.SetY(500);
 }
 
 Game::~Game()
@@ -46,74 +33,141 @@ Game::~Game()
 	al_uninstall_keyboard();
 	al_uninstall_mouse();
 	al_destroy_timer(timer);
-	al_destroy_bitmap(p1);
-	al_destroy_bitmap(p2);
-	al_destroy_bitmap(g1);
-	al_destroy_bitmap(g2);
-	al_destroy_bitmap(g3);
-
-	for (int i = 0; i < image.size(); i++)
-		al_destroy_bitmap(image[i]);
 }
 
 void Game::run()
 {
 	bool running = true;
-	float x = 0, y = 0;
 	int width = al_get_display_width(display);
+	std::vector<ALLEGRO_BITMAP*> image1 = p1.GetAnnimation(p1.GetState());
+	std::vector<ALLEGRO_BITMAP*> image2 = p2.GetAnnimation(p2.GetState());
 
 	al_start_timer(timer);
 	while (running)
 	{
+		int prevState1 = p1.GetState();
+		int curState1 = p1.GetState();
+		bool prevDir1 = p1.GetDir();
+		bool curDir1 = p1.GetDir();
+
+		int prevState2 = p2.GetState();
+		int curState2 = p2.GetState();
+		bool prevDir2 = p2.GetDir();
+		bool curDir2 = p2.GetDir();
 
 		ALLEGRO_EVENT event;
 		al_wait_for_event(queue, &event);
+
 		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 			running = false;
 
-		// mouse
 		if (event.type == ALLEGRO_EVENT_MOUSE_AXES)
 		{
-			x = event.mouse.x;
-			y = event.mouse.y;
+			// NOTHING
 		}
 
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
 		{
+			/*
 			x = y = 0;
 			al_set_mouse_xy(display, 0, 0);
+			*/
 		}
 
 		ALLEGRO_KEYBOARD_STATE keyState;
 		al_get_keyboard_state(&keyState);
 
-		if (al_key_down(&keyState, ALLEGRO_KEY_UP))
-			if (al_key_down(&keyState, ALLEGRO_KEY_LCTRL))
-				x += 10;
-			else
-				x += 1;
+		if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT))
+		{
+			p1.SetX(p1.GetX() + p1.GetSpeed());
+			curDir1 = true;
+			curState1 = 1;
+		}
+		else if (al_key_down(&keyState, ALLEGRO_KEY_LEFT))
+		{
+			p1.SetX(p1.GetX() - p1.GetSpeed());
+			curDir1 = false;
+			curState1 = 1;
+		}
+		else if (al_key_down(&keyState, ALLEGRO_KEY_UP))
+		{
+			p1.SetY(p1.GetY() - p1.GetSpeed());
+		}
+		else if (al_key_down(&keyState, ALLEGRO_KEY_DOWN))
+		{
+			p1.SetY(p1.GetY() + p1.GetSpeed());
+		}
+		else
+			curState1 = 3;
+
+		if (al_key_down(&keyState, ALLEGRO_KEY_D))
+		{
+			p2.SetX(p2.GetX() + p2.GetSpeed());
+			curDir2 = true;
+			curState2 = 1;
+		}
+		else if (al_key_down(&keyState, ALLEGRO_KEY_A))
+		{
+			p2.SetX(p2.GetX() - p2.GetSpeed());
+			curDir2 = false;
+			curState2 = 1;
+		}
+		else if (al_key_down(&keyState, ALLEGRO_KEY_W))
+		{
+			p2.SetY(p2.GetY() - p2.GetSpeed());
+		}
+		else if (al_key_down(&keyState, ALLEGRO_KEY_S))
+		{
+			p2.SetY(p2.GetY() + p2.GetSpeed());
+		}
+		else
+			curState2 = 3;
 
 
 		if (event.type == ALLEGRO_EVENT_TIMER)
 		{
-			if (++frameCount >= frameDelay)
+			if (prevDir1 != curDir1 || prevState1 != curState1)
 			{
-				if (++curFrame >= image.size())
-					curFrame = 0;
-				frameCount = 0;
+				p1.SetState(curState1);
+				p1.SetDir(curDir1);
+
+				image1 = p1.GetAnnimation(curState1);
+				frameCount1 = frameDelay;
+				curFrame1 = image1.size();
 			}
 
-			al_draw_scaled_bitmap(image[curFrame], 0, 0, 24, 24, x, y, 84, 84, 0);
-			
-			// al_draw_bitmap(p1, x, y, 0);
+			if (++frameCount1 >= frameDelay)
+			{
+				if (++curFrame1 >= image1.size())
+					curFrame1 = 0;
+				frameCount1 = 0;
+			}
+
+
+
+			if (prevDir2 != curDir2 || prevState2 != curState2)
+			{
+				p2.SetState(curState2);
+				p2.SetDir(curDir2);
+
+				image2 = p2.GetAnnimation(curState2);
+				frameCount2 = frameDelay;
+				curFrame2 = image2.size();
+			}
+
+			if (++frameCount2 >= frameDelay)
+			{
+				if (++curFrame2 >= image2.size())
+					curFrame2 = 0;
+				frameCount2 = 0;
+			}
+
+			al_draw_scaled_bitmap(image1[curFrame1], 0, 0, 24, 24, p1.GetX(), p1.GetY(), 84, 84, 0);
+			al_draw_scaled_bitmap(image2[curFrame2], 0, 0, 24, 24, p2.GetX(), p2.GetY(), 84, 84, 0);
+
 			al_flip_display(); // draw the screen
 			al_clear_to_color(al_map_rgba_f(1,1,1,1));
 
 		}
-
-
-
-		if (x > width)
-			x = -al_get_bitmap_width(p1);
 	}
 }
