@@ -2,6 +2,8 @@
 #define Game_h
 
 #include "Players.h"
+#include <allegro5\allegro_audio.h>
+#include <allegro5\allegro_acodec.h>
 
 class Game
 {
@@ -12,20 +14,20 @@ public:
 	void run();
 
 private:
+	void start();
+	void pickP1();
+	void pickP2();
+	void maze();
+
 	ALLEGRO_DISPLAY* display;
 	ALLEGRO_EVENT_QUEUE* queue;
 	ALLEGRO_TIMER* timer;
-	/*
-	ALLEGRO_BITMAP* p1, * p2;
-	ALLEGRO_BITMAP* g1, * g2, * g3;
-	std::vector< ALLEGRO_BITMAP*> image;
-	*/
+	ALLEGRO_SAMPLE* music = NULL;
 
-	int curFrame1 = 0;
-	int frameCount1 = 0;
-	int curFrame2 = 0;
-	int frameCount2 = 0;
 	const int frameDelay = 10;
+
+	Pacman f, m;
+	Ghost b, g, r, y;
 
 	Pacman p1;
 	Ghost p2;
