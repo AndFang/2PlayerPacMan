@@ -60,53 +60,53 @@ Player& Player::operator=(const Player& obj)
 
 void Player::populateAnnimation(std::string place, bool ghost)
 {
-	hurtL.push_back(al_load_bitmap((place + "L/Hurt/Hurt0.png").c_str()));
-	hurtL.push_back(al_load_bitmap((place + "L/Hurt/Hurt1.png").c_str()));
-	hurtL.push_back(al_load_bitmap((place + "L/Hurt/Hurt2.png").c_str()));
-	hurtL.push_back(al_load_bitmap((place + "L/Hurt/Hurt3.png").c_str()));
+	hurtL.push_back(al_load_bitmap((place + "L/Hurt0.png").c_str()));
+	hurtL.push_back(al_load_bitmap((place + "L/Hurt1.png").c_str()));
+	hurtL.push_back(al_load_bitmap((place + "L/Hurt2.png").c_str()));
+	hurtL.push_back(al_load_bitmap((place + "L/Hurt3.png").c_str()));
 
-	hurtR.push_back(al_load_bitmap((place + "R/Hurt/Hurt0.png").c_str()));
-	hurtR.push_back(al_load_bitmap((place + "R/Hurt/Hurt1.png").c_str()));
-	hurtR.push_back(al_load_bitmap((place + "R/Hurt/Hurt2.png").c_str()));
-	hurtR.push_back(al_load_bitmap((place + "R/Hurt/Hurt3.png").c_str()));
+	hurtR.push_back(al_load_bitmap((place + "R/Hurt0.png").c_str()));
+	hurtR.push_back(al_load_bitmap((place + "R/Hurt1.png").c_str()));
+	hurtR.push_back(al_load_bitmap((place + "R/Hurt2.png").c_str()));
+	hurtR.push_back(al_load_bitmap((place + "R/Hurt3.png").c_str()));
 
-	moveL.push_back(al_load_bitmap((place + "L/Move/Move0.png").c_str()));
-	moveL.push_back(al_load_bitmap((place + "L/Move/Move1.png").c_str()));
-	moveL.push_back(al_load_bitmap((place + "L/Move/Move2.png").c_str()));
-	moveL.push_back(al_load_bitmap((place + "L/Move/Move3.png").c_str()));
+	moveL.push_back(al_load_bitmap((place + "L/Move0.png").c_str()));
+	moveL.push_back(al_load_bitmap((place + "L/Move1.png").c_str()));
+	moveL.push_back(al_load_bitmap((place + "L/Move2.png").c_str()));
+	moveL.push_back(al_load_bitmap((place + "L/Move3.png").c_str()));
 
-	moveR.push_back(al_load_bitmap((place + "R/Move/Move0.png").c_str()));
-	moveR.push_back(al_load_bitmap((place + "R/Move/Move1.png").c_str()));
-	moveR.push_back(al_load_bitmap((place + "R/Move/Move2.png").c_str()));
-	moveR.push_back(al_load_bitmap((place + "R/Move/Move3.png").c_str()));
+	moveR.push_back(al_load_bitmap((place + "R/Move0.png").c_str()));
+	moveR.push_back(al_load_bitmap((place + "R/Move1.png").c_str()));
+	moveR.push_back(al_load_bitmap((place + "R/Move2.png").c_str()));
+	moveR.push_back(al_load_bitmap((place + "R/Move3.png").c_str()));
 
-	speedL.push_back(al_load_bitmap((place + "L/Speed/Speed0.png").c_str()));
-	speedL.push_back(al_load_bitmap((place + "L/Speed/Speed1.png").c_str()));
-	speedL.push_back(al_load_bitmap((place + "L/Speed/Speed2.png").c_str()));
-	speedL.push_back(al_load_bitmap((place + "L/Speed/Speed3.png").c_str()));
+	speedL.push_back(al_load_bitmap((place + "L/Speed0.png").c_str()));
+	speedL.push_back(al_load_bitmap((place + "L/Speed1.png").c_str()));
+	speedL.push_back(al_load_bitmap((place + "L/Speed2.png").c_str()));
+	speedL.push_back(al_load_bitmap((place + "L/Speed3.png").c_str()));
 
-	speedR.push_back(al_load_bitmap((place + "R/Speed/Speed0.png").c_str()));
-	speedR.push_back(al_load_bitmap((place + "R/Speed/Speed1.png").c_str()));
-	speedR.push_back(al_load_bitmap((place + "R/Speed/Speed2.png").c_str()));
-	speedR.push_back(al_load_bitmap((place + "R/Speed/Speed3.png").c_str()));
+	speedR.push_back(al_load_bitmap((place + "R/Speed0.png").c_str()));
+	speedR.push_back(al_load_bitmap((place + "R/Speed1.png").c_str()));
+	speedR.push_back(al_load_bitmap((place + "R/Speed2.png").c_str()));
+	speedR.push_back(al_load_bitmap((place + "R/Speed3.png").c_str()));
 
-	standL.push_back(al_load_bitmap((place + "L/Stand/Stand0.png").c_str()));
-	standL.push_back(al_load_bitmap((place + "L/Stand/Stand1.png").c_str()));
-	standL.push_back(al_load_bitmap((place + "L/Stand/Stand2.png").c_str()));
-	standL.push_back(al_load_bitmap((place + "L/Stand/Stand3.png").c_str()));
+	standL.push_back(al_load_bitmap((place + "L/Stand0.png").c_str()));
+	standL.push_back(al_load_bitmap((place + "L/Stand1.png").c_str()));
+	standL.push_back(al_load_bitmap((place + "L/Stand2.png").c_str()));
+	standL.push_back(al_load_bitmap((place + "L/Stand3.png").c_str()));
 
-	standR.push_back(al_load_bitmap((directory + "R/Stand/Stand0.png").c_str()));
-	standR.push_back(al_load_bitmap((directory + "R/Stand/Stand1.png").c_str()));
-	standR.push_back(al_load_bitmap((directory + "R/Stand/Stand2.png").c_str()));
-	standR.push_back(al_load_bitmap((directory + "R/Stand/Stand3.png").c_str()));
+	standR.push_back(al_load_bitmap((directory + "R/Stand0.png").c_str()));
+	standR.push_back(al_load_bitmap((directory + "R/Stand1.png").c_str()));
+	standR.push_back(al_load_bitmap((directory + "R/Stand2.png").c_str()));
+	standR.push_back(al_load_bitmap((directory + "R/Stand3.png").c_str()));
 
 	if (ghost)
 	{
-		moveL.push_back(al_load_bitmap((place + "L/Move/Move4.png").c_str()));
-		moveL.push_back(al_load_bitmap((place + "L/Move/Move5.png").c_str()));
+		moveL.push_back(al_load_bitmap((place + "L/Move4.png").c_str()));
+		moveL.push_back(al_load_bitmap((place + "L/Move5.png").c_str()));
 
-		moveR.push_back(al_load_bitmap((place + "R/Move/Move4.png").c_str()));
-		moveR.push_back(al_load_bitmap((place + "R/Move/Move5.png").c_str()));
+		moveR.push_back(al_load_bitmap((place + "R/Move4.png").c_str()));
+		moveR.push_back(al_load_bitmap((place + "R/Move5.png").c_str()));
 	}
 }
 
