@@ -29,7 +29,7 @@ public:
 protected:
 	int x;
 	int y;
-	int speed = 2;
+	int speed = 5;
 	int state = 3; // 0 = hurt, 1 = move, 2 = speed, 3 = stand
 	bool attack;
 	bool dir = false; // 0 = left, 1 = right

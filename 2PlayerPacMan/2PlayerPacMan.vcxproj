@@ -113,7 +113,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -135,7 +135,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Maze.cpp" />
     <ClCompile Include="MainPacman.cpp" />
     <ClCompile Include="Players.cpp" />
     <ClCompile Include="Score.cpp" />
@@ -147,7 +146,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Maze.h" />
     <ClInclude Include="Players.h" />
     <ClInclude Include="Score.h" />
   </ItemGroup>
