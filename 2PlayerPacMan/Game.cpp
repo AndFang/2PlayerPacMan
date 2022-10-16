@@ -4,7 +4,7 @@ Game::Game()
 {
 	al_init();
 
-	display = al_create_display(1270, 809);
+	display = al_create_display(1280, 816);
 	queue = al_create_event_queue();
 	timer = al_create_timer(1.0 / 60);
 
@@ -45,7 +45,7 @@ Game::~Game()
 
 void Game::run()
 {
-	al_play_sample(music, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
+	//al_play_sample(music, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
 	start();
 	pickP1();
 	pickP2();
@@ -119,7 +119,7 @@ void Game::start()
 
 		if (event.type == ALLEGRO_EVENT_TIMER)
 		{
-			al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1270, 809, 0);
+			al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
 			al_draw_bitmap(text, 277, 150, 0);
 			al_draw_scaled_bitmap(enter, 0, 0, al_get_bitmap_width(enter), al_get_bitmap_height(enter), 403, 250, 463, 19, 0);
 
@@ -246,7 +246,7 @@ void Game::pickP1()
 
 		if (event.type == ALLEGRO_EVENT_TIMER)
 		{
-			al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1270, 809, 0);
+			al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
 			al_draw_scaled_bitmap(text, 0, 0, al_get_bitmap_width(text), al_get_bitmap_height(text), 204, 50, 862, 38, 0);
 			al_draw_bitmap(b1, 115, 245, 0);
 			al_draw_bitmap(b2, 835, 245, 0);
@@ -351,7 +351,7 @@ void Game::pickP2()
 
 		if (event.type == ALLEGRO_EVENT_TIMER)
 		{
-			al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1270, 809, 0);
+			al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
 			al_draw_scaled_bitmap(text, 0, 0, al_get_bitmap_width(text), al_get_bitmap_height(text), 194, 50, 883, 38, 0);
 			al_draw_scaled_bitmap(b1, 0, 0, al_get_bitmap_width(b1), al_get_bitmap_height(b1), 75, 285, 240, 240, 0);
 			al_draw_scaled_bitmap(b2, 0, 0, al_get_bitmap_width(b2), al_get_bitmap_height(b2), 355, 285, 240, 240, 0);
@@ -381,23 +381,28 @@ void Game::maze()
 {
 	bool running = true;
 
-	ALLEGRO_BITMAP* background = al_load_bitmap("Assets/maze.png");
+	ALLEGRO_BITMAP* background = al_load_bitmap("Assets/Game/maze.png");
+
+	int pstartX = 30;
+	int pstartY = 40;
+	int gstartX = 930;
+	int gstartY = 245;
 
 	p1.SetDir(1);
-	p1.SetX(30);
-	p1.SetY(40);
-	p2.SetDir(1);
-	p2.SetX(1000);
-	p2.SetY(600);
+	p1.SetX(pstartX);
+	p1.SetY(pstartY);
+	p2.SetDir(0);
+	p2.SetX(gstartX);
+	p2.SetY(gstartY);
 	g1.SetDir(1);
-	g1.SetX(661);
-	g1.SetY(600);
-	g2.SetDir(1);
-	g2.SetX(941);
-	g2.SetY(600);
+	g1.SetX(gstartX + 50);
+	g1.SetY(gstartY);
+	g2.SetDir(0);
+	g2.SetX(gstartX);
+	g2.SetY(gstartY + 50);
 	g3.SetDir(1);
-	g3.SetX(941);
-	g3.SetY(600);
+	g3.SetX(gstartX + 50);
+	g3.SetY(gstartY + 50);
 
 	std::vector<ALLEGRO_BITMAP*> p1Image = p1.GetAnnimation(p1.GetState());
 	std::vector<ALLEGRO_BITMAP*> p2Image = p2.GetAnnimation(p2.GetState());
@@ -409,10 +414,21 @@ void Game::maze()
 	int p1FrameCount = 0;
 	int p2CurFrame = 0;
 	int p2FrameCount = 0;
+	int g1CurFrame = 0;
+	int g1FrameCount = 0;
+	int g2CurFrame = 0;
+	int g2FrameCount = 0;
+	int g3CurFrame = 0;
+	int g3FrameCount = 0;
 
+	bool p1move = false;
+	bool p2move = false;
 	al_start_timer(timer);
 	while (running)
 	{
+		p1move = false;
+		p2move = false;
+
 		int prevState1 = p1.GetState();
 		int curState1 = p1.GetState();
 		bool prevDir1 = p1.GetDir();
@@ -434,23 +450,27 @@ void Game::maze()
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT))
 		{
+			p1move = true;
 			p1.SetX(p1.GetX() + p1.GetSpeed());
 			curDir1 = true;
 			curState1 = 1;
 		}
 		else if (al_key_down(&keyState, ALLEGRO_KEY_LEFT))
 		{
+			p1move = true;
 			p1.SetX(p1.GetX() - p1.GetSpeed());
 			curDir1 = false;
 			curState1 = 1;
 		}
 		else if (al_key_down(&keyState, ALLEGRO_KEY_UP))
 		{
+			p1move = true;
 			p1.SetY(p1.GetY() - p1.GetSpeed());
 			curState1 = 1;
 		}
 		else if (al_key_down(&keyState, ALLEGRO_KEY_DOWN))
 		{
+			p1move = true;
 			p1.SetY(p1.GetY() + p1.GetSpeed());
 			curState1 = 1;
 		}
@@ -459,23 +479,27 @@ void Game::maze()
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_D))
 		{
+			p2move = true;
 			p2.SetX(p2.GetX() + p2.GetSpeed());
 			curDir2 = true;
 			curState2 = 1;
 		}
 		else if (al_key_down(&keyState, ALLEGRO_KEY_A))
 		{
+			p2move = true;
 			p2.SetX(p2.GetX() - p2.GetSpeed());
 			curDir2 = false;
 			curState2 = 1;
 		}
 		else if (al_key_down(&keyState, ALLEGRO_KEY_W))
 		{
+			p2move = true;
 			p2.SetY(p2.GetY() - p2.GetSpeed());
 			curState2 = 1;
 		}
 		else if (al_key_down(&keyState, ALLEGRO_KEY_S))
 		{
+			p2move = true;
 			p2.SetY(p2.GetY() + p2.GetSpeed());
 			curState2 = 1;
 		}
@@ -484,7 +508,12 @@ void Game::maze()
 
 		if (event.type == ALLEGRO_EVENT_TIMER)
 		{
-			al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1270, 809, 0);
+			al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
+			
+			if (ghostCollision(p1, p2) || ghostCollision(p1, g1) || ghostCollision(p1, g2) || ghostCollision(p1, g3))
+			{
+				running = false;
+			}
 
 			if (prevDir1 != curDir1 || prevState1 != curState1)
 			{
@@ -492,16 +521,15 @@ void Game::maze()
 				p1.SetDir(curDir1);
 
 				p1Image = p1.GetAnnimation(curState1);
-				p1FrameCount = frameDelay;
+				p1FrameCount = gameDelay;
 				p1CurFrame = p1Image.size();
 			}
-			if (++p1FrameCount >= frameDelay)
+			if (++p1FrameCount >= gameDelay)
 			{
 				if (++p1CurFrame >= p1Image.size())
 					p1CurFrame = 0;
 				p1FrameCount = 0;
 			}
-
 
 			if (prevDir2 != curDir2 || prevState2 != curState2)
 			{
@@ -509,21 +537,133 @@ void Game::maze()
 				p2.SetDir(curDir2);
 
 				p2Image = p2.GetAnnimation(curState2);
-				p2FrameCount = frameDelay;
+				p2FrameCount = gameDelay;
 				p2CurFrame = p2Image.size();
 			}
-			if (++p2FrameCount >= frameDelay)
+			if (++p2FrameCount >= gameDelay)
 			{
 				if (++p2CurFrame >= p2Image.size())
 					p2CurFrame = 0;
 				p2FrameCount = 0;
 			}
 
-			al_draw_scaled_bitmap(p1Image[p1CurFrame], 0, 0, 24, 24, p1.GetX(), p1.GetY(), 48, 48, 0);
-			al_draw_scaled_bitmap(p2Image[p2CurFrame], 0, 0, 24, 24, p2.GetX(), p2.GetY(), 48, 48, 0);
+			if (p1move)
+				wallCollision(p1, background);
+			if (p2move)
+				wallCollision(p2, background);
+
+			al_draw_scaled_bitmap(p1Image[p1CurFrame], 0, 0, 24, 24, p1.GetX(), p1.GetY(), 36, 36, 0);
+			al_draw_scaled_bitmap(p2Image[p2CurFrame], 0, 0, 24, 24, p2.GetX(), p2.GetY(), 36, 36, 0);
+
+			/*
+			//ALLEGRO_COLOR pos = al_get_pixel(background, p1.GetX() + 6, p1.GetY() + 12);
+			//std::cout << pos.r << " " << pos.g << " " << pos.b << " " << p1.GetX() << " " << p1.GetY() << std::endl;
+			ALLEGRO_COLOR red;
+			red.r = 1;
+			red.g = 1;
+			red.b = 1;
+
+			for (int i = 0; i < 1; i++)
+				for (int j = 0; j < 1; j++)
+				{
+					//al_draw_pixel(i, j, pos);
+					al_draw_pixel(p1.GetX() + 6, p1.GetY() + 12, red);
+					al_draw_pixel(p1.GetX() + 30, p1.GetY() + 12, red);
+					al_draw_pixel(p1.GetX() + 6, p1.GetY() + 36, red);
+					al_draw_pixel(p1.GetX() + 30, p1.GetY() + 36, red);
+
+					al_draw_pixel(p2.GetX() + 6, p2.GetY() + 6, red);
+					al_draw_pixel(p2.GetX() + 30, p2.GetY() + 6, red);
+					al_draw_pixel(p2.GetX() + 6, p2.GetY() + 30, red);
+					al_draw_pixel(p2.GetX() + 30, p2.GetY() + 30, red);
+				}
+			//*/
+
+			if (++g1FrameCount >= gameDelay)
+			{
+				if (++g1CurFrame >= g1Image.size())
+					g1CurFrame = 0;
+				g1FrameCount = 0;
+			}
+			if (++g2FrameCount >= gameDelay)
+			{
+				if (++g2CurFrame >= g2Image.size())
+					g2CurFrame = 0;
+				g2FrameCount = 0;
+			}
+			if (++g3FrameCount >= gameDelay)
+			{
+				if (++g3CurFrame >= g3Image.size())
+					g3CurFrame = 0;
+				g3FrameCount = 0;
+			}
+
+			wallCollision(g1, background);
+			wallCollision(g2, background);
+			wallCollision(g3, background);
+
+			al_draw_scaled_bitmap(g1Image[g1CurFrame], 0, 0, 24, 24, g1.GetX(), g1.GetY(), 36, 36, 0);
+			al_draw_scaled_bitmap(g2Image[g2CurFrame], 0, 0, 24, 24, g2.GetX(), g2.GetY(), 36, 36, 0);
+			al_draw_scaled_bitmap(g3Image[g3CurFrame], 0, 0, 24, 24, g3.GetX(), g3.GetY(), 36, 36, 0);
 
 			al_flip_display();
-			al_clear_to_color(al_map_rgba_f(1, 1, 1, 1));
 		}
 	}
+}
+
+void Game::wallCollision(Player& p, ALLEGRO_BITMAP* bg)
+{
+	int l = p.GetX() + 6;
+	int r = p.GetX() + 30;
+	int t = p.GetY() + 9;
+	int b = p.GetY() + 33;
+
+	ALLEGRO_COLOR lt = al_get_pixel(bg, l, t);
+	ALLEGRO_COLOR rt = al_get_pixel(bg, r, t);
+	ALLEGRO_COLOR lb = al_get_pixel(bg, l, b);
+	ALLEGRO_COLOR rb = al_get_pixel(bg, r, b);
+
+	float wall = 0.839216;
+
+	if (fabs(lt.r - wall) < 0.01)
+	{
+		p.SetX(p.GetX() + p.GetSpeed());
+		p.SetY(p.GetY() + p.GetSpeed());
+	}
+	if (fabs(rt.r - wall) < 0.01)
+	{
+		p.SetX(p.GetX() - p.GetSpeed());
+		p.SetY(p.GetY() + p.GetSpeed());
+	}
+	if (fabs(lb.r - wall) < 0.01)
+	{
+		p.SetX(p.GetX() + p.GetSpeed());
+		p.SetY(p.GetY() - p.GetSpeed());
+	}
+	if (fabs(rb.r - wall) < 0.01)
+	{
+		p.SetX(p.GetX() - p.GetSpeed());
+		p.SetY(p.GetY() - p.GetSpeed());
+	}
+}
+
+bool Game::ghostCollision(Player& p, Player& g)
+{
+	int pl = p.GetX() + 6;
+	int pt = p.GetY() + 9;
+	int pr = p.GetX() + 30;
+	int pb = p.GetY() + 33;
+
+	int gl = g.GetX() + 6;
+	int gt = g.GetY() + 9;
+	int gr = g.GetX() + 30;
+	int gb = g.GetY() + 33;
+
+	if (pl > gr || gl > pr)
+		return false;
+
+	if (pb < gt || gb < pt)
+		return false;
+
+	return true;
 }

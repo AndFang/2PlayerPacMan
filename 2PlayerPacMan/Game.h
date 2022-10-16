@@ -4,6 +4,7 @@
 #include "Players.h"
 #include <allegro5\allegro_audio.h>
 #include <allegro5\allegro_acodec.h>
+#include <iostream>
 
 class Game
 {
@@ -18,6 +19,8 @@ private:
 	void pickP1();
 	void pickP2();
 	void maze();
+	void wallCollision(Player& p, ALLEGRO_BITMAP* bg);
+	bool ghostCollision(Player& p, Player& g);
 
 	ALLEGRO_DISPLAY* display;
 	ALLEGRO_EVENT_QUEUE* queue;
@@ -25,6 +28,7 @@ private:
 	ALLEGRO_SAMPLE* music = NULL;
 
 	const int frameDelay = 10;
+	const int gameDelay = 2;
 
 	Pacman f, m;
 	Ghost b, g, r, y;
