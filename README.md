@@ -21,8 +21,11 @@ After selecting your players, the games starts!
 - Start Background: [Pixel jungles landscape](https://stock.adobe.com/images/8bit-pixel-jungles-landscape-game-level-background-with-forest-trees-and-palms-vector-pixel-art-8-bit-arcade-video-game-background-of-wild-tropical-rainforest-palm-trees-and-mountains/506981216?as_campaign=ftmigration2&as_channel=dpcft&as_campclass=brand&as_source=ft_web&as_camptype=acquisition&as_audience=users&as_content=closure_asset-detail-page) by [Vector Tradition](https://stock.adobe.com/contributor/201100175/vector-tradition?load_type=author&prev_url=detail)
 - Music:
   - Main Background: [The Chase](https://www.youtube.com/watch?v=O8MH3JhD85U) by [Mr.TV](https://open.spotify.com/artist/6SpRZcn1m0DK3ncQMkgyG1)
-  - Death: 
+  - Chase: [8-Bit Chase](https://soundcloud.com/derpysnakemusic/8-bit-chase) by [derpysnakemusic](https://soundcloud.com/derpysnakemusic)
+  - Countdown: [Arcade Countdown](https://pixabay.com/sound-effects/arcade-countdown-7007/) by NXRT
+  - Death: [Videogame Death Sound](https://pixabay.com/sound-effects/videogame-death-sound-43894/) by Fupicat
   - Powerup (Dino): 
   - Powerup (Human): 
+  - Game Over: [Never Gonna Give You Up - 8 Bit Universe](https://soundcloud.com/mikeosharp17/never-gonna-give-you-up-8-bit-remix-cover-version-tribute-to-rick-astley-8-bit-universe) by [mikeosharp17](https://soundcloud.com/mikeosharp17)
 - [Pixal Fonts](https://fontmeme.com/pixel-fonts/)
 - [Sprites Splitter](https://ezgif.com/sprite-cutter)
