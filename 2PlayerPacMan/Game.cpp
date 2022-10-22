@@ -13,8 +13,13 @@ Game::Game()
 	al_install_audio();
 	al_init_acodec_addon();
 
-	al_reserve_samples(1);
-	music = al_load_sample("Assets/music.wav");
+	al_reserve_samples(4);
+	music = al_load_sample("Assets/Sounds/music.wav");
+	chase = al_load_sample("Assets/Sounds/chase.wav");
+	countdown = al_load_sample("Assets/Sounds/countdown.wav");
+	death = al_load_sample("Assets/Sounds/death.wav");
+	end = al_load_sample("Assets/Sounds/end.wav");
+	thump = al_load_sample("Assets/Sounds/thump.wav");
 	assert(music != NULL);
 
 	al_register_event_source(queue, al_get_keyboard_event_source());
@@ -41,16 +46,124 @@ Game::~Game()
 	al_destroy_timer(timer);
 	// DESTROY BITMAPS
 	al_destroy_sample(music);
+	al_destroy_sample(chase);
+	al_destroy_sample(countdown);
+	al_destroy_sample(death);
+	al_destroy_sample(end);
 }
 
 void Game::run()
 {
-	//al_play_sample(music, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
+	ALLEGRO_SAMPLE_ID* bm = new ALLEGRO_SAMPLE_ID();
+	al_play_sample(music, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, bm);
 	start();
 	pickP1();
 	pickP2();
-	maze();
-	
+
+	int lives = 3;
+
+	while (lives)
+	{
+		al_stop_sample(bm);
+
+		ALLEGRO_BITMAP* background = al_load_bitmap("Assets/Game/maze.png");
+		ALLEGRO_BITMAP* c1 = al_load_bitmap("Assets/Game/1.png");
+		ALLEGRO_BITMAP* c2 = al_load_bitmap("Assets/Game/2.png");
+		ALLEGRO_BITMAP* c3 = al_load_bitmap("Assets/Game/3.png");
+		ALLEGRO_BITMAP* cs = al_load_bitmap("Assets/Game/start.png");
+		ALLEGRO_BITMAP* con = al_load_bitmap("Assets/Game/continue.png");
+		
+		al_play_sample(countdown, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, bm);
+		al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
+		al_draw_bitmap(c3, 600, 400, 0);
+		al_flip_display();
+		al_rest(1);
+		al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
+		al_draw_bitmap(c2, 600, 400, 0);
+		al_flip_display();
+		al_rest(1);
+		al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
+		al_draw_bitmap(c1, 600, 400, 0);
+		al_flip_display();
+		al_rest(1);
+		al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
+		al_draw_bitmap(cs, 450, 400, 0);
+		al_flip_display();
+		al_rest(1);
+		al_stop_sample(bm);
+		
+		al_play_sample(chase, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, bm);
+		std::vector<ALLEGRO_BITMAP*> pos = maze(lives);
+		al_stop_sample(bm);
+		lives -= 1;
+
+		al_play_sample(death, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, bm);
+		std::vector<ALLEGRO_BITMAP*> p1death = p1.GetAnnimation(0);
+		int i = 0;
+		while (i != 4)
+		{
+			al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
+			al_draw_scaled_bitmap(p1death[i], 0, 0, 24, 24, p1.GetX(), p1.GetY(), 36, 36, 0);
+			al_draw_scaled_bitmap(pos[0], 0, 0, 24, 24, p2.GetX(), p2.GetY(), 36, 36, 0);
+			al_draw_scaled_bitmap(pos[1], 0, 0, 24, 24, g1.GetX(), g1.GetY(), 36, 36, 0);
+			al_draw_scaled_bitmap(pos[2], 0, 0, 24, 24, g2.GetX(), g2.GetY(), 36, 36, 0);
+			al_draw_scaled_bitmap(pos[3], 0, 0, 24, 24, g3.GetX(), g3.GetY(), 36, 36, 0);
+			al_flip_display();
+			al_rest(0.5);
+			i += 1;
+		}
+		if (lives)
+		{
+			al_draw_scaled_bitmap(con, 0, 0, al_get_bitmap_width(con), al_get_bitmap_height(con), 255, 420, 760, 30, 0);
+			al_flip_display();
+
+			bool space = true;
+			ALLEGRO_EVENT event;
+			ALLEGRO_KEYBOARD_STATE keyState;
+			while (space)
+			{
+				al_wait_for_event(queue, &event);
+				if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+					std::exit(0);
+				
+				al_get_keyboard_state(&keyState);
+				if (al_key_down(&keyState, ALLEGRO_KEY_SPACE))
+				{
+					space = false;
+				}
+			}
+		}
+		al_stop_sample(bm);
+	}
+
+	al_play_sample(end, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, bm);
+	ALLEGRO_BITMAP* over = al_load_bitmap("Assets/Game/over1.png");
+	ALLEGRO_BITMAP* exit = al_load_bitmap("Assets/Game/exit.png");
+
+	al_play_sample(thump, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+	al_draw_bitmap(over, 380, 200, 0);
+	al_flip_display();
+	al_rest(1.5);
+
+	al_play_sample(thump, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+	al_draw_scaled_bitmap(exit, 0, 0, al_get_bitmap_width(exit), al_get_bitmap_height(exit), 280, 420, 760, 30, 0);
+	al_flip_display();
+	bool space = true;
+	ALLEGRO_EVENT event;
+	ALLEGRO_KEYBOARD_STATE keyState;
+	while (space)
+	{
+		al_wait_for_event(queue, &event);
+		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+			std::exit(0);
+
+		al_get_keyboard_state(&keyState);
+		if (al_key_down(&keyState, ALLEGRO_KEY_SPACE))
+		{
+			space = false;
+		}
+	}
+	al_stop_sample(bm);
 }
 
 void Game::start()
@@ -377,14 +490,14 @@ void Game::pickP2()
 
 }
 
-void Game::maze()
+std::vector<ALLEGRO_BITMAP*> Game::maze(int lives)
 {
 	bool running = true;
 
 	ALLEGRO_BITMAP* background = al_load_bitmap("Assets/Game/maze.png");
 
-	int pstartX = 30;
-	int pstartY = 40;
+	int pstartX = 900; // 30
+	int pstartY = 200; // 40
 	int gstartX = 930;
 	int gstartY = 245;
 
@@ -403,6 +516,11 @@ void Game::maze()
 	g3.SetDir(1);
 	g3.SetX(gstartX + 50);
 	g3.SetY(gstartY + 50);
+
+	ALLEGRO_BITMAP* ltext = al_load_bitmap("Assets/Game/life.png");
+	ALLEGRO_BITMAP* life = p1.GetAnnimation(p1.GetState())[0];
+	int lifex = 10;
+	int lifey = 765;
 
 	std::vector<ALLEGRO_BITMAP*> p1Image = p1.GetAnnimation(p1.GetState());
 	std::vector<ALLEGRO_BITMAP*> p2Image = p2.GetAnnimation(p2.GetState());
@@ -424,6 +542,8 @@ void Game::maze()
 	bool p1move = false;
 	bool p2move = false;
 	al_start_timer(timer);
+	ALLEGRO_EVENT event;
+	ALLEGRO_KEYBOARD_STATE keyState;
 	while (running)
 	{
 		p1move = false;
@@ -439,15 +559,11 @@ void Game::maze()
 		bool prevDir2 = p2.GetDir();
 		bool curDir2 = p2.GetDir();
 
-		ALLEGRO_EVENT event;
 		al_wait_for_event(queue, &event);
-
 		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 			std::exit(0);
 
-		ALLEGRO_KEYBOARD_STATE keyState;
 		al_get_keyboard_state(&keyState);
-
 		if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT))
 		{
 			p1move = true;
@@ -606,9 +722,23 @@ void Game::maze()
 			al_draw_scaled_bitmap(g2Image[g2CurFrame], 0, 0, 24, 24, g2.GetX(), g2.GetY(), 36, 36, 0);
 			al_draw_scaled_bitmap(g3Image[g3CurFrame], 0, 0, 24, 24, g3.GetX(), g3.GetY(), 36, 36, 0);
 
+			al_draw_scaled_bitmap(ltext, 0, 0, 400, 63, lifex + 10, lifey - 10, 50, 13, 0);
+			for (int i = 0; i < lives; i++)
+			{
+				al_draw_scaled_bitmap(life, 0, 0, 24, 24, lifex + i * 40, lifey, 36, 36, 0);
+			}
+
 			al_flip_display();
 		}
 	}
+
+	std::vector<ALLEGRO_BITMAP*> pos;
+	pos.push_back(p2Image[p2CurFrame]);
+	pos.push_back(g1Image[g1CurFrame]);
+	pos.push_back(g2Image[g2CurFrame]);
+	pos.push_back(g3Image[g3CurFrame]);
+
+	return pos;
 }
 
 void Game::wallCollision(Player& p, ALLEGRO_BITMAP* bg)
