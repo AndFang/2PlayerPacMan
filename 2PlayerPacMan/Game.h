@@ -18,14 +18,19 @@ private:
 	void start();
 	void pickP1();
 	void pickP2();
-	void maze();
+	std::vector<ALLEGRO_BITMAP*> maze(int lives);
 	void wallCollision(Player& p, ALLEGRO_BITMAP* bg);
 	bool ghostCollision(Player& p, Player& g);
 
 	ALLEGRO_DISPLAY* display;
 	ALLEGRO_EVENT_QUEUE* queue;
 	ALLEGRO_TIMER* timer;
-	ALLEGRO_SAMPLE* music = NULL;
+	ALLEGRO_SAMPLE* music;
+	ALLEGRO_SAMPLE* chase;
+	ALLEGRO_SAMPLE* countdown;
+	ALLEGRO_SAMPLE* death;
+	ALLEGRO_SAMPLE* end;
+	ALLEGRO_SAMPLE* thump;
 
 	const int frameDelay = 10;
 	const int gameDelay = 2;
