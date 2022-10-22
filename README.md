@@ -1,8 +1,14 @@
 # 2PlayerPacMan : Dino Chase
 
-Built in Visual Studio 2022 using Allegro
+Built in Visual Studio 2022 using Allegro\
+![DC Start](/2PlayerPacMan/Assets/gitstart.png)
+
 
 ## Dino Chase
+Welcome to Dino Chase! This game is a reskin of PacMan but with a twist. This game is two players where one person picks to be the human (PacMan) and the other picks to be a dinosaur (Ghost). The selection screen for both are below. 
+![DC Start](/2PlayerPacMan/Assets/gitp1.png)
+![DC Start](/2PlayerPacMan/Assets/gitp2.png)
+After selecting your players, the games starts!
 
 ## Credits for Game Assets
 - Dino Sprites: [Dino Characters](https://arks.itch.io/dino-characters) by [Arks💢](https://arks.itch.io/)
