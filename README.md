@@ -9,6 +9,9 @@ Welcome to Dino Chase! This game is a reskin of PacMan but with a twist. This ga
 ![DC Start](/2PlayerPacMan/Assets/gitp1.png)
 ![DC Start](/2PlayerPacMan/Assets/gitp2.png)
 After selecting your players, the games starts!
+![Maze](/2PlayerPacMan/Assets/gitmaze.jpg)
+Your goal is to get as many points before the dinosaurs catch you. Your points accumulated over three lives. Afterwards the game ends
+![Game Over](/2PlayerPacMan/Assets/gitover.jpg)
 
 ## Credits for Game Assets
 - Dino Sprites: [Dino Characters](https://arks.itch.io/dino-characters) by [Arks💢](https://arks.itch.io/)
@@ -29,3 +32,4 @@ After selecting your players, the games starts!
   - Game Over: [Never Gonna Give You Up - 8 Bit Universe](https://soundcloud.com/mikeosharp17/never-gonna-give-you-up-8-bit-remix-cover-version-tribute-to-rick-astley-8-bit-universe) by [mikeosharp17](https://soundcloud.com/mikeosharp17)
 - [Pixal Fonts](https://fontmeme.com/pixel-fonts/)
 - [Sprites Splitter](https://ezgif.com/sprite-cutter)
+- [Font](https://www.1001fonts.com/origami-mommy-font.html)
