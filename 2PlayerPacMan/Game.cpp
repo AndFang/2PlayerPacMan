@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game()
+Game::Game() : _pts(0)
 {
 	al_init();
 
@@ -12,6 +12,8 @@ Game::Game()
 	al_install_mouse();
 	al_install_audio();
 	al_init_acodec_addon();
+	al_init_font_addon();
+	al_init_ttf_addon();
 
 	al_reserve_samples(4);
 	music = al_load_sample("Assets/Sounds/music.wav");
@@ -35,6 +37,107 @@ Game::Game()
 	g = Ghost("DinoG");
 	r = Ghost("DinoR");
 	y = Ghost("DinoY");
+
+	_walls.push_back({ 95,110,290,255 });
+	_walls.push_back({ 95,350,290,495 });
+	_walls.push_back({ 365,110,530,255 });
+	_walls.push_back({ 365,350,530,705 });
+	_walls.push_back({ 605,320,960,430 });
+	_walls.push_back({ 605,525,750,705 });
+	_walls.push_back({ 830,525,960,705 });
+	_walls.push_back({ 1040,160,1185,500 });
+	_walls.push_back({ 1040,590,1185,705 });
+	_walls.push_back({ 605,110,865,225 });
+	_walls.push_back({ 865,160,960,225 });
+	_walls.push_back({ 95,590,290,660 });
+	_walls.push_back({ 240,660,290,705 });
+
+	_walls.push_back({ 0,0,1280,20 });
+	_walls.push_back({ 945,20,1280,65 });
+	_walls.push_back({ 0,20,20,816 });
+	_walls.push_back({ 20,750,160,816 });
+	_walls.push_back({ 160,795,1280,816 });
+	_walls.push_back({ 1260,65,1280,795 });
+
+	_coins.push_back(new Coin(40, 100));
+	_coins.push_back(new Coin(40, 200));
+	_coins.push_back(new Coin(40, 300));
+	_coins.push_back(new Coin(40, 400));
+	_coins.push_back(new Coin(40, 500));
+	_coins.push_back(new Coin(40, 600));
+	_coins.push_back(new Coin(40, 700));
+	_coins.push_back(new Coin(140, 700));
+	_coins.push_back(new Coin(200, 750));
+	_coins.push_back(new Coin(300, 750));
+	_coins.push_back(new Coin(400, 750));
+	_coins.push_back(new Coin(500, 750));
+	_coins.push_back(new Coin(600, 750));
+	_coins.push_back(new Coin(700, 750));
+	_coins.push_back(new Coin(800, 750));
+	_coins.push_back(new Coin(900, 750));
+	_coins.push_back(new Coin(1000, 750));
+	_coins.push_back(new Coin(1100, 750));
+	_coins.push_back(new Coin(1200, 750));
+	_coins.push_back(new Coin(1200, 650));
+	_coins.push_back(new Coin(1200, 550));
+	_coins.push_back(new Coin(1200, 450));
+	_coins.push_back(new Coin(1200, 350));
+	_coins.push_back(new Coin(1200, 250));
+	_coins.push_back(new Coin(1200, 150));
+	_coins.push_back(new Coin(1100, 100));
+	_coins.push_back(new Coin(1000, 100));
+	_coins.push_back(new Coin(900, 100));
+	_coins.push_back(new Coin(800, 50));
+	_coins.push_back(new Coin(700, 50));
+	_coins.push_back(new Coin(600, 50));
+	_coins.push_back(new Coin(500, 50));
+	_coins.push_back(new Coin(400, 50));
+	_coins.push_back(new Coin(300, 50));
+	_coins.push_back(new Coin(200, 50));
+	_coins.push_back(new Coin(100, 50));
+
+	_coins.push_back(new Coin(140, 300));
+	_coins.push_back(new Coin(240, 300));
+	_coins.push_back(new Coin(320, 300));
+	_coins.push_back(new Coin(440, 300));
+	_coins.push_back(new Coin(550, 320));
+
+	_coins.push_back(new Coin(320, 120));
+	_coins.push_back(new Coin(320, 220));
+	_coins.push_back(new Coin(320, 420));
+	_coins.push_back(new Coin(320, 520));
+	_coins.push_back(new Coin(320, 620));
+
+	_coins.push_back(new Coin(140, 520));
+	_coins.push_back(new Coin(240, 520));
+
+	_coins.push_back(new Coin(550, 120));
+	_coins.push_back(new Coin(550, 220));
+	_coins.push_back(new Coin(550, 420));
+	_coins.push_back(new Coin(550, 520));
+	_coins.push_back(new Coin(550, 620));
+	_coins.push_back(new Coin(550, 700));
+
+	_coins.push_back(new Coin(620, 265));
+	_coins.push_back(new Coin(720, 265));
+	_coins.push_back(new Coin(820, 265));
+	_coins.push_back(new Coin(920, 265));
+
+	_coins.push_back(new Coin(990, 170));
+	_coins.push_back(new Coin(990, 270));
+	_coins.push_back(new Coin(990, 370));
+	_coins.push_back(new Coin(990, 470));
+	_coins.push_back(new Coin(990, 570));
+	_coins.push_back(new Coin(990, 670));
+
+	_coins.push_back(new Coin(620, 470));
+	_coins.push_back(new Coin(690, 470));
+	_coins.push_back(new Coin(790, 470));
+	_coins.push_back(new Coin(890, 470));
+
+	_coins.push_back(new Coin(780, 550));
+	_coins.push_back(new Coin(780, 650));
+	_coins.push_back(new Coin(1100, 550));
 }
 
 Game::~Game()
@@ -72,7 +175,7 @@ void Game::run()
 		ALLEGRO_BITMAP* c3 = al_load_bitmap("Assets/Game/3.png");
 		ALLEGRO_BITMAP* cs = al_load_bitmap("Assets/Game/start.png");
 		ALLEGRO_BITMAP* con = al_load_bitmap("Assets/Game/continue.png");
-		
+
 		al_play_sample(countdown, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, bm);
 		al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
 		al_draw_bitmap(c3, 600, 400, 0);
@@ -91,7 +194,7 @@ void Game::run()
 		al_flip_display();
 		al_rest(1);
 		al_stop_sample(bm);
-		
+
 		al_play_sample(chase, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, bm);
 		std::vector<ALLEGRO_BITMAP*> pos = maze(lives);
 		al_stop_sample(bm);
@@ -103,11 +206,11 @@ void Game::run()
 		while (i != 4)
 		{
 			al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
-			al_draw_scaled_bitmap(p1death[i], 0, 0, 24, 24, p1.GetX(), p1.GetY(), 36, 36, 0);
-			al_draw_scaled_bitmap(pos[0], 0, 0, 24, 24, p2.GetX(), p2.GetY(), 36, 36, 0);
-			al_draw_scaled_bitmap(pos[1], 0, 0, 24, 24, g1.GetX(), g1.GetY(), 36, 36, 0);
-			al_draw_scaled_bitmap(pos[2], 0, 0, 24, 24, g2.GetX(), g2.GetY(), 36, 36, 0);
-			al_draw_scaled_bitmap(pos[3], 0, 0, 24, 24, g3.GetX(), g3.GetY(), 36, 36, 0);
+			al_draw_scaled_bitmap(p1death[i], 0, 0, 24, 24, p1.GetX(), p1.GetY(), 48, 48, 0);
+			al_draw_scaled_bitmap(pos[0], 0, 0, 24, 24, p2.GetX(), p2.GetY(), 48, 48, 0);
+			al_draw_scaled_bitmap(pos[1], 0, 0, 24, 24, g1.GetX(), g1.GetY(), 48, 48, 0);
+			al_draw_scaled_bitmap(pos[2], 0, 0, 24, 24, g2.GetX(), g2.GetY(), 48, 48, 0);
+			al_draw_scaled_bitmap(pos[3], 0, 0, 24, 24, g3.GetX(), g3.GetY(), 48, 48, 0);
 			al_flip_display();
 			al_rest(0.5);
 			i += 1;
@@ -125,7 +228,7 @@ void Game::run()
 				al_wait_for_event(queue, &event);
 				if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 					std::exit(0);
-				
+
 				al_get_keyboard_state(&keyState);
 				if (al_key_down(&keyState, ALLEGRO_KEY_SPACE))
 				{
@@ -492,6 +595,766 @@ void Game::pickP2()
 
 std::vector<ALLEGRO_BITMAP*> Game::maze(int lives)
 {
+	ALLEGRO_BITMAP* coin = al_load_bitmap("Assets/Game/coin.png");
+	ALLEGRO_FONT* font36 = al_load_font("Assets/PixalFont.ttf", 36, 0);
+	int frameCount = 0;
+
+	bool running = true;
+
+	ALLEGRO_BITMAP* background = al_load_bitmap("Assets/Game/maze.png");
+
+	int pstartX = 30; // 900
+	int pstartY = 40; // 200
+	int gstartX = 930;
+	int gstartY = 245;
+
+	p1.SetDir(1);
+	p1.SetX(pstartX);
+	p1.SetY(pstartY);
+	p2.SetDir(0);
+	p2.SetX(gstartX);
+	p2.SetY(gstartY);
+	g1.SetDir(1);
+	g1.SetX(gstartX + 50);
+	g1.SetY(gstartY);
+	g2.SetDir(0);
+	g2.SetX(gstartX);
+	g2.SetY(gstartY + 50);
+	g3.SetDir(1);
+	g3.SetX(gstartX + 50);
+	g3.SetY(gstartY + 50);
+
+	g1.SetMove(0);
+	g2.SetMove(1);
+	g3.SetMove(2);
+	g1.SetState(1);
+	g2.SetState(1);
+	g3.SetState(1);
+
+	//p2.SetSpeed(3);
+	g1.SetSpeed(4);
+	g2.SetSpeed(4);
+	g3.SetSpeed(4);
+
+	ALLEGRO_BITMAP* ltext = al_load_bitmap("Assets/Game/life.png");
+	ALLEGRO_BITMAP* life = p1.GetAnnimation(p1.GetState())[0];
+	int lifex = 10;
+	int lifey = 765;
+
+	std::vector<ALLEGRO_BITMAP*> p1Image = p1.GetAnnimation(p1.GetState());
+	std::vector<ALLEGRO_BITMAP*> p2Image = p2.GetAnnimation(p2.GetState());
+	std::vector<ALLEGRO_BITMAP*> g1Image = g1.GetAnnimation(g1.GetState());
+	std::vector<ALLEGRO_BITMAP*> g2Image = g2.GetAnnimation(g2.GetState());
+	std::vector<ALLEGRO_BITMAP*> g3Image = g3.GetAnnimation(g3.GetState());
+
+	int p1CurFrame = 0;
+	int p1FrameCount = 0;
+	int p2CurFrame = 0;
+	int p2FrameCount = 0;
+	int g1CurFrame = 0;
+	int g1FrameCount = 0;
+	int g2CurFrame = 0;
+	int g2FrameCount = 0;
+	int g3CurFrame = 0;
+	int g3FrameCount = 0;
+
+	bool p1move = false;
+	bool p2move = false;
+	al_start_timer(timer);
+	ALLEGRO_EVENT event;
+	ALLEGRO_KEYBOARD_STATE keyState;
+	while (running)
+	{
+		p1move = false;
+		p2move = false;
+
+		int prevState1 = p1.GetState();
+		int curState1 = p1.GetState();
+		bool prevDir1 = p1.GetDir();
+		bool curDir1 = p1.GetDir();
+
+		int prevState2 = p2.GetState();
+		int curState2 = p2.GetState();
+		bool prevDir2 = p2.GetDir();
+		bool curDir2 = p2.GetDir();
+
+		al_wait_for_event(queue, &event);
+		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+			std::exit(0);
+
+		al_get_keyboard_state(&keyState);
+		if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT))
+		{
+			p1move = true;
+			p1.SetX(p1.GetX() + p1.GetSpeed());
+			curDir1 = true;
+			curState1 = 1;
+		}
+		else if (al_key_down(&keyState, ALLEGRO_KEY_LEFT))
+		{
+			p1move = true;
+			p1.SetX(p1.GetX() - p1.GetSpeed());
+			curDir1 = false;
+			curState1 = 1;
+		}
+		else if (al_key_down(&keyState, ALLEGRO_KEY_UP))
+		{
+			p1move = true;
+			p1.SetY(p1.GetY() - p1.GetSpeed());
+			curState1 = 1;
+		}
+		else if (al_key_down(&keyState, ALLEGRO_KEY_DOWN))
+		{
+			p1move = true;
+			p1.SetY(p1.GetY() + p1.GetSpeed());
+			curState1 = 1;
+		}
+		else
+			curState1 = 3;
+
+		if (al_key_down(&keyState, ALLEGRO_KEY_D))
+		{
+			p2move = true;
+			p2.SetX(p2.GetX() + p2.GetSpeed());
+			curDir2 = true;
+			curState2 = 1;
+		}
+		else if (al_key_down(&keyState, ALLEGRO_KEY_A))
+		{
+			p2move = true;
+			p2.SetX(p2.GetX() - p2.GetSpeed());
+			curDir2 = false;
+			curState2 = 1;
+		}
+		else if (al_key_down(&keyState, ALLEGRO_KEY_W))
+		{
+			p2move = true;
+			p2.SetY(p2.GetY() - p2.GetSpeed());
+			curState2 = 1;
+		}
+		else if (al_key_down(&keyState, ALLEGRO_KEY_S))
+		{
+			p2move = true;
+			p2.SetY(p2.GetY() + p2.GetSpeed());
+			curState2 = 1;
+		}
+		else
+			curState2 = 3;
+
+#if 0
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+		{
+			ALLEGRO_MOUSE_STATE state;
+			al_get_mouse_state(&state);
+			std::cout << state.x << " " << state.y << std::endl;
+		}
+#endif
+
+		if (event.type == ALLEGRO_EVENT_TIMER)
+		{
+			al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
+
+			for (auto i : _coins)
+			{
+				if (i->GetShow() && i->Hit(p1.GetX() + 6, p1.GetY() + 9, p1.GetX() + 42, p1.GetY() + 45))
+					_pts += 10;
+				if (i->GetShow())
+					al_draw_scaled_bitmap(coin, 0, 0, al_get_bitmap_width(coin), al_get_bitmap_height(coin), i->GetX(), i->GetY(), 30, 30, 0);
+			}
+
+			if (++frameCount >= frameDelay)
+			{
+				for (auto i : _coins)
+					i->DecreaseTimeout();
+				frameCount = 0;
+			}
+
+			if (ghostCollision(p1, p2) || ghostCollision(p1, g1) || ghostCollision(p1, g2) || ghostCollision(p1, g3))
+			{
+				running = false;
+			}
+
+			if (prevDir1 != curDir1 || prevState1 != curState1)
+			{
+				p1.SetState(curState1);
+				p1.SetDir(curDir1);
+
+				p1Image = p1.GetAnnimation(curState1);
+				p1FrameCount = gameDelay;
+				p1CurFrame = p1Image.size();
+			}
+			if (++p1FrameCount >= gameDelay)
+			{
+				if (++p1CurFrame >= p1Image.size())
+					p1CurFrame = 0;
+				p1FrameCount = 0;
+			}
+
+			if (prevDir2 != curDir2 || prevState2 != curState2)
+			{
+				p2.SetState(curState2);
+				p2.SetDir(curDir2);
+
+				p2Image = p2.GetAnnimation(curState2);
+				p2FrameCount = gameDelay;
+				p2CurFrame = p2Image.size();
+			}
+			if (++p2FrameCount >= gameDelay)
+			{
+				if (++p2CurFrame >= p2Image.size())
+					p2CurFrame = 0;
+				p2FrameCount = 0;
+			}
+
+			if (p1move)
+				wallCollision(p1);
+			if (p2move)
+				wallCollision(p2);
+
+			al_draw_scaled_bitmap(p1Image[p1CurFrame], 0, 0, 24, 24, p1.GetX(), p1.GetY(), 48, 48, 0);
+			al_draw_scaled_bitmap(p2Image[p2CurFrame], 0, 0, 24, 24, p2.GetX(), p2.GetY(), 48, 48, 0);
+
+			/*
+			//ALLEGRO_COLOR pos = al_get_pixel(background, p1.GetX() + 6, p1.GetY() + 12);
+			//std::cout << pos.r << " " << pos.g << " " << pos.b << " " << p1.GetX() << " " << p1.GetY() << std::endl;
+			ALLEGRO_COLOR red;
+			red.r = 1;
+			red.g = 1;
+			red.b = 1;
+			for (int i = 0; i < 1; i++)
+				for (int j = 0; j < 1; j++)
+				{
+					//al_draw_pixel(i, j, pos);
+					al_draw_pixel(p1.GetX() + 6, p1.GetY() + 12, red);
+					al_draw_pixel(p1.GetX() + 30, p1.GetY() + 12, red);
+					al_draw_pixel(p1.GetX() + 6, p1.GetY() + 36, red);
+					al_draw_pixel(p1.GetX() + 30, p1.GetY() + 36, red);
+					al_draw_pixel(p2.GetX() + 6, p2.GetY() + 6, red);
+					al_draw_pixel(p2.GetX() + 30, p2.GetY() + 6, red);
+					al_draw_pixel(p2.GetX() + 6, p2.GetY() + 30, red);
+					al_draw_pixel(p2.GetX() + 30, p2.GetY() + 30, red);
+				}
+			//*/
+
+			if (++g1FrameCount >= gameDelay)
+			{
+				if (++g1CurFrame >= g1Image.size())
+					g1CurFrame = 0;
+				g1FrameCount = 0;
+			}
+			if (++g2FrameCount >= gameDelay)
+			{
+				if (++g2CurFrame >= g2Image.size())
+					g2CurFrame = 0;
+				g2FrameCount = 0;
+			}
+			if (++g3FrameCount >= gameDelay)
+			{
+				if (++g3CurFrame >= g3Image.size())
+					g3CurFrame = 0;
+				g3FrameCount = 0;
+			}
+
+			AIMove(g1);
+			AIMove(g2);
+			AIMove(g3);
+
+			g1Image = g1.GetAnnimation(g1.GetState());
+			g2Image = g2.GetAnnimation(g2.GetState());
+			g3Image = g3.GetAnnimation(g3.GetState());
+
+			if (wallCollision(g1))
+			{
+				g1.SetMove((int)(((double)rand() / (RAND_MAX)) * 4));
+				
+			}
+			if (wallCollision(g2))
+			{
+				g2.SetMove((int)(((double)rand() / (RAND_MAX)) * 4));
+				
+			}
+			if (wallCollision(g3))
+			{
+				g3.SetMove((int)(((double)rand() / (RAND_MAX)) * 4));
+				
+			}
+
+			
+
+			al_draw_scaled_bitmap(g1Image[g1CurFrame], 0, 0, 24, 24, g1.GetX(), g1.GetY(), 48, 48, 0);
+			al_draw_scaled_bitmap(g2Image[g2CurFrame], 0, 0, 24, 24, g2.GetX(), g2.GetY(), 48, 48, 0);
+			al_draw_scaled_bitmap(g3Image[g3CurFrame], 0, 0, 24, 24, g3.GetX(), g3.GetY(), 48, 48, 0);
+
+			al_draw_scaled_bitmap(ltext, 0, 0, 400, 63, lifex + 10, lifey - 10, 50, 13, 0);
+			for (int i = 0; i < lives; i++)
+			{
+				al_draw_scaled_bitmap(life, 0, 0, 24, 24, lifex + i * 40, lifey, 36, 36, 0);
+			}
+
+			std::string score = "Score: " + std::to_string(_pts);
+			al_draw_text(font36, al_map_rgb(0, 0, 0), 950, 20, 0, score.c_str());
+
+			al_flip_display();
+		}
+	}
+
+	std::vector<ALLEGRO_BITMAP*> pos;
+	pos.push_back(p2Image[p2CurFrame]);
+	pos.push_back(g1Image[g1CurFrame]);
+	pos.push_back(g2Image[g2CurFrame]);
+	pos.push_back(g3Image[g3CurFrame]);
+
+	return pos;
+}
+
+bool Game::wallCollision(Player& p)
+{
+	int l = p.GetX() + 6;
+	int r = l + 36;
+	int t = p.GetY() + 9;
+	int b = t + 36;
+
+	bool hit = false;
+
+	for (auto w : _walls)
+	{
+		if (w[0] <= l && l <= w[2] && w[1] <= t && t <= w[3])
+		{
+			p.SetX(p.GetX() + p.GetSpeed());
+			p.SetY(p.GetY() + p.GetSpeed());
+			hit = true;
+		}
+		if (w[0] <= r && r <= w[2] && w[1] <= t && t <= w[3])
+		{
+			p.SetX(p.GetX() - p.GetSpeed());
+			p.SetY(p.GetY() + p.GetSpeed());
+			hit = true;
+		}
+		if (w[0] <= l && l <= w[2] && w[1] <= b && b <= w[3])
+		{
+			p.SetX(p.GetX() + p.GetSpeed());
+			p.SetY(p.GetY() - p.GetSpeed());
+			hit = true;
+		}
+		if (w[0] <= r && r <= w[2] && w[1] <= b && b <= w[3])
+		{
+			p.SetX(p.GetX() - p.GetSpeed());
+			p.SetY(p.GetY() - p.GetSpeed());
+			hit = true;
+		}
+	}
+
+	return hit;
+
+#if 0
+	ALLEGRO_COLOR lt = al_get_pixel(bg, l, t);
+	ALLEGRO_COLOR rt = al_get_pixel(bg, r, t);
+	ALLEGRO_COLOR lb = al_get_pixel(bg, l, b);
+	ALLEGRO_COLOR rb = al_get_pixel(bg, r, b);
+
+	float wall = 0.839216;
+
+	if (fabs(lt.r - wall) < 0.01)
+	{
+		p.SetX(p.GetX() + p.GetSpeed());
+		p.SetY(p.GetY() + p.GetSpeed());
+	}
+	if (fabs(rt.r - wall) < 0.01)
+	{
+		p.SetX(p.GetX() - p.GetSpeed());
+		p.SetY(p.GetY() + p.GetSpeed());
+	}
+	if (fabs(lb.r - wall) < 0.01)
+	{
+		p.SetX(p.GetX() + p.GetSpeed());
+		p.SetY(p.GetY() - p.GetSpeed());
+	}
+	if (fabs(rb.r - wall) < 0.01)
+	{
+		p.SetX(p.GetX() - p.GetSpeed());
+		p.SetY(p.GetY() - p.GetSpeed());
+	}
+#endif
+}
+
+bool Game::ghostCollision(Player& p, Player& g)
+{
+	int pl = p.GetX() + 6;
+	int pt = p.GetY() + 9;
+	int pr = pl + 36;
+	int pb = pt + 36;
+
+	int gl = g.GetX() + 6;
+	int gt = g.GetY() + 9;
+	int gr = gl + 36;
+	int gb = gt + 36;
+
+	if (pl > gr || gl > pr)
+		return false;
+
+	if (pb < gt || gb < pt)
+		return false;
+
+	return true;
+}
+
+void Game::AIMove(Player& p)
+{
+	double change = ((double)rand() / (RAND_MAX));
+	if (change < 0.02)
+		p.SetMove((int)(((double)rand() / (RAND_MAX)) * 4));
+
+	switch (p.GetMove())
+	{
+		case 0:
+			p.SetX(p.GetX() + p.GetSpeed());
+			p.SetDir(true);
+			return;
+		case 1:
+			p.SetX(p.GetX() - p.GetSpeed());
+			p.SetDir(false);
+			return;
+		case 2:
+			p.SetY(p.GetY() - p.GetSpeed());
+			return;
+		case 3:
+			p.SetY(p.GetY() + p.GetSpeed());
+			return;
+	}
+
+	p.SetState(1);
+}
+
+#if 0
+const float FPS = 60;
+
+Game::Game() : _width(1280), _height(816), _finish(false), _display(NULL), _timer(NULL), _queue(NULL)
+{
+	Init();
+}
+
+Game::~Game()
+{
+	Shutdown();
+}
+
+void Game::Run()
+{
+	while (!_finish)
+	{
+		_curEvent = WaitForEvent();
+
+		if (_curEvent == EV_NULL)
+		{
+			continue;
+		}
+		if (_curEvent == EV_CLOSE)
+		{
+			break;
+		}
+
+		RenderStart();
+		Notify();
+		if (_curEvent == EV_TIMER)
+		{
+			RenderEnd();
+		}
+	}
+}
+
+void Game::CursorPosition(int& cx, int& cy) const
+{
+	ALLEGRO_MOUSE_STATE state;
+	al_get_mouse_state(&state);
+	cx = state.x;
+	cy = state.y;
+}
+
+void Game::DrawImage(ALLEGRO_BITMAP* image, int x, int y)
+{
+	al_draw_bitmap(image, x, y, 0);
+}
+
+void Game::DrawImageScaled(ALLEGRO_BITMAP* image, int x, int y, int sx, int sy)
+{
+	al_draw_scaled_bitmap(image, 0, 0, al_get_bitmap_width(image), al_get_bitmap_height(image), x, y, sx, sy, 0);
+}
+
+void Game::Init()
+{
+	if (!al_init())
+	{
+		cout << "Failed to initialize allegro\n";
+		exit(-1);
+	}
+
+	if (!al_install_keyboard())
+	{
+		cout << "Failed to initialize the keyboard\n";
+		exit(-1);
+	}
+
+	if (!al_install_mouse())
+	{
+		cout << "Failed to initialize the mouse\n";
+		exit(-1);
+	}
+
+	if (!al_install_audio())
+	{
+		cout << "Failed to initialize the audio\n";
+		exit(-1);
+	}
+	if (!al_init_acodec_addon())
+	{
+		cout << "Failed to initialize the samples\n";
+		exit(-1);
+	}
+
+	_bm = new ALLEGRO_SAMPLE_ID();
+	if (!_bm)
+	{
+		cout << "Failed to initialize the sample mixer\n";
+		exit(-1);
+	}
+
+	_timer = al_create_timer(1.0 / FPS);
+	if (!_timer) {
+		cout << "Failed to create timer\n";
+		exit(-1);
+	}
+
+	_display = al_create_display(_width, _height);
+	if (!_display)
+	{
+		cout << "Failed to create display\n";
+		Shutdown();
+		exit(-1);
+	}
+	al_set_target_bitmap(al_get_backbuffer(_display)); // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	_queue = al_create_event_queue();
+	if (!_queue) {
+		cout << "Failed to create queue\n";
+		Shutdown();
+		exit(-1);
+	}
+	
+	al_register_event_source(_queue, al_get_display_event_source(_display));
+	al_register_event_source(_queue, al_get_timer_event_source(_timer));
+	al_register_event_source(_queue, al_get_keyboard_event_source());
+	al_register_event_source(_queue, al_get_mouse_event_source());
+
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+	al_flip_display();
+	al_start_timer(_timer);
+
+	al_init_image_addon();
+}
+
+void Game::Shutdown()
+{
+	al_uninstall_keyboard();
+	al_uninstall_mouse();
+	al_uninstall_audio();
+
+	if (_timer)
+	{
+		al_destroy_timer(_timer);
+		_timer = NULL;
+	}
+
+	if (_display)
+	{
+		al_destroy_display(_display);
+		_display = NULL;
+	}
+	
+	if (_queue)
+	{
+		al_destroy_event_queue(_queue);
+		_queue = NULL;
+	}
+
+	delete _bm;
+}
+
+EventType Game::WaitForEvent()
+{
+	ALLEGRO_EVENT ev;
+	al_wait_for_event(_queue, &ev);
+
+	if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+	{
+		return EV_CLOSE;
+	}
+
+	if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+	{
+		return EV_MOUSE_UP;
+	}
+
+	if (ev.type == ALLEGRO_EVENT_TIMER) {
+		return EV_TIMER;
+	}
+		
+	if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
+	{
+		switch (ev.keyboard.keycode)
+		{
+			case ALLEGRO_KEY_ENTER:
+				return EV_ENTER;
+			case ALLEGRO_KEY_SPACE:
+				return EV_SPACE;
+		}
+	}
+
+	ALLEGRO_KEYBOARD_STATE keyState;
+	al_get_keyboard_state(&keyState);
+	if (al_key_down(&keyState, ALLEGRO_KEY_UP))
+		return EV_UP;
+	if (al_key_down(&keyState, ALLEGRO_KEY_DOWN))
+		return EV_DOWN;
+	if (al_key_down(&keyState, ALLEGRO_KEY_LEFT))
+		return EV_LEFT;
+	if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT))
+		return EV_RIGHT;
+	if (al_key_down(&keyState, ALLEGRO_KEY_A))
+		return EV_A;
+	if (al_key_down(&keyState, ALLEGRO_KEY_S))
+		return EV_S;
+	if (al_key_down(&keyState, ALLEGRO_KEY_D))
+		return EV_D;
+	if (al_key_down(&keyState, ALLEGRO_KEY_W))
+		return EV_W;
+
+
+	return EV_NULL;
+}
+
+void Game::RenderStart()
+{
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+}
+
+void Game::RenderEnd()
+{
+	al_flip_display();
+}
+
+void Game::run()
+{
+	ALLEGRO_SAMPLE_ID* bm = new ALLEGRO_SAMPLE_ID();
+	al_play_sample(_music, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, bm);
+
+	int lives = 3;
+
+	while (lives)
+	{
+		al_stop_sample(bm);
+
+		ALLEGRO_BITMAP* background = al_load_bitmap("Assets/Game/maze.png");
+		ALLEGRO_BITMAP* c1 = al_load_bitmap("Assets/Game/1.png");
+		ALLEGRO_BITMAP* c2 = al_load_bitmap("Assets/Game/2.png");
+		ALLEGRO_BITMAP* c3 = al_load_bitmap("Assets/Game/3.png");
+		ALLEGRO_BITMAP* cs = al_load_bitmap("Assets/Game/start.png");
+		ALLEGRO_BITMAP* con = al_load_bitmap("Assets/Game/continue.png");
+		
+		al_play_sample(_countdown, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, bm);
+		al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
+		al_draw_bitmap(c3, 600, 400, 0);
+		al_flip_display();
+		al_rest(1);
+		al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
+		al_draw_bitmap(c2, 600, 400, 0);
+		al_flip_display();
+		al_rest(1);
+		al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
+		al_draw_bitmap(c1, 600, 400, 0);
+		al_flip_display();
+		al_rest(1);
+		al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
+		al_draw_bitmap(cs, 450, 400, 0);
+		al_flip_display();
+		al_rest(1);
+		al_stop_sample(bm);
+		
+		al_play_sample(chase, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, bm);
+		std::vector<ALLEGRO_BITMAP*> pos = maze(lives);
+		al_stop_sample(bm);
+		lives -= 1;
+
+		al_play_sample(death, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, bm);
+		std::vector<ALLEGRO_BITMAP*> p1death = p1.GetAnnimation(0);
+		int i = 0;
+		while (i != 4)
+		{
+			al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, 1280, 816, 0);
+			al_draw_scaled_bitmap(p1death[i], 0, 0, 24, 24, p1.GetX(), p1.GetY(), 36, 36, 0);
+			al_draw_scaled_bitmap(pos[0], 0, 0, 24, 24, p2.GetX(), p2.GetY(), 36, 36, 0);
+			al_draw_scaled_bitmap(pos[1], 0, 0, 24, 24, g1.GetX(), g1.GetY(), 36, 36, 0);
+			al_draw_scaled_bitmap(pos[2], 0, 0, 24, 24, g2.GetX(), g2.GetY(), 36, 36, 0);
+			al_draw_scaled_bitmap(pos[3], 0, 0, 24, 24, g3.GetX(), g3.GetY(), 36, 36, 0);
+			al_flip_display();
+			al_rest(0.5);
+			i += 1;
+		}
+		if (lives)
+		{
+			al_draw_scaled_bitmap(con, 0, 0, al_get_bitmap_width(con), al_get_bitmap_height(con), 255, 420, 760, 30, 0);
+			al_flip_display();
+
+			bool space = true;
+			ALLEGRO_EVENT event;
+			ALLEGRO_KEYBOARD_STATE keyState;
+			while (space)
+			{
+				al_wait_for_event(queue, &event);
+				if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+					std::exit(0);
+				
+				al_get_keyboard_state(&keyState);
+				if (al_key_down(&keyState, ALLEGRO_KEY_SPACE))
+				{
+					space = false;
+				}
+			}
+		}
+		al_stop_sample(bm);
+	}
+
+	al_play_sample(end, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, bm);
+	ALLEGRO_BITMAP* over = al_load_bitmap("Assets/Game/over1.png");
+	ALLEGRO_BITMAP* exit = al_load_bitmap("Assets/Game/exit.png");
+
+	al_play_sample(thump, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+	al_draw_bitmap(over, 380, 200, 0);
+	al_flip_display();
+	al_rest(1.5);
+
+	al_play_sample(thump, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+	al_draw_scaled_bitmap(exit, 0, 0, al_get_bitmap_width(exit), al_get_bitmap_height(exit), 280, 420, 760, 30, 0);
+	al_flip_display();
+	bool space = true;
+	ALLEGRO_EVENT event;
+	ALLEGRO_KEYBOARD_STATE keyState;
+	while (space)
+	{
+		al_wait_for_event(queue, &event);
+		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+			std::exit(0);
+
+		al_get_keyboard_state(&keyState);
+		if (al_key_down(&keyState, ALLEGRO_KEY_SPACE))
+		{
+			space = false;
+		}
+	}
+	al_stop_sample(bm);
+}
+
+std::vector<ALLEGRO_BITMAP*> Game::maze(int lives)
+{
 	bool running = true;
 
 	ALLEGRO_BITMAP* background = al_load_bitmap("Assets/Game/maze.png");
@@ -637,10 +1500,10 @@ std::vector<ALLEGRO_BITMAP*> Game::maze(int lives)
 				p1.SetDir(curDir1);
 
 				p1Image = p1.GetAnnimation(curState1);
-				p1FrameCount = gameDelay;
+				p1FrameCount = GAMEDELAY;
 				p1CurFrame = p1Image.size();
 			}
-			if (++p1FrameCount >= gameDelay)
+			if (++p1FrameCount >= GAMEDELAY)
 			{
 				if (++p1CurFrame >= p1Image.size())
 					p1CurFrame = 0;
@@ -653,10 +1516,10 @@ std::vector<ALLEGRO_BITMAP*> Game::maze(int lives)
 				p2.SetDir(curDir2);
 
 				p2Image = p2.GetAnnimation(curState2);
-				p2FrameCount = gameDelay;
+				p2FrameCount = GAMEDELAY;
 				p2CurFrame = p2Image.size();
 			}
-			if (++p2FrameCount >= gameDelay)
+			if (++p2FrameCount >= GAMEDELAY)
 			{
 				if (++p2CurFrame >= p2Image.size())
 					p2CurFrame = 0;
@@ -695,19 +1558,19 @@ std::vector<ALLEGRO_BITMAP*> Game::maze(int lives)
 				}
 			//*/
 
-			if (++g1FrameCount >= gameDelay)
+			if (++g1FrameCount >= GAMEDELAY)
 			{
 				if (++g1CurFrame >= g1Image.size())
 					g1CurFrame = 0;
 				g1FrameCount = 0;
 			}
-			if (++g2FrameCount >= gameDelay)
+			if (++g2FrameCount >= GAMEDELAY)
 			{
 				if (++g2CurFrame >= g2Image.size())
 					g2CurFrame = 0;
 				g2FrameCount = 0;
 			}
-			if (++g3FrameCount >= gameDelay)
+			if (++g3FrameCount >= GAMEDELAY)
 			{
 				if (++g3CurFrame >= g3Image.size())
 					g3CurFrame = 0;
@@ -740,60 +1603,4 @@ std::vector<ALLEGRO_BITMAP*> Game::maze(int lives)
 
 	return pos;
 }
-
-void Game::wallCollision(Player& p, ALLEGRO_BITMAP* bg)
-{
-	int l = p.GetX() + 6;
-	int r = p.GetX() + 30;
-	int t = p.GetY() + 9;
-	int b = p.GetY() + 33;
-
-	ALLEGRO_COLOR lt = al_get_pixel(bg, l, t);
-	ALLEGRO_COLOR rt = al_get_pixel(bg, r, t);
-	ALLEGRO_COLOR lb = al_get_pixel(bg, l, b);
-	ALLEGRO_COLOR rb = al_get_pixel(bg, r, b);
-
-	float wall = 0.839216;
-
-	if (fabs(lt.r - wall) < 0.01)
-	{
-		p.SetX(p.GetX() + p.GetSpeed());
-		p.SetY(p.GetY() + p.GetSpeed());
-	}
-	if (fabs(rt.r - wall) < 0.01)
-	{
-		p.SetX(p.GetX() - p.GetSpeed());
-		p.SetY(p.GetY() + p.GetSpeed());
-	}
-	if (fabs(lb.r - wall) < 0.01)
-	{
-		p.SetX(p.GetX() + p.GetSpeed());
-		p.SetY(p.GetY() - p.GetSpeed());
-	}
-	if (fabs(rb.r - wall) < 0.01)
-	{
-		p.SetX(p.GetX() - p.GetSpeed());
-		p.SetY(p.GetY() - p.GetSpeed());
-	}
-}
-
-bool Game::ghostCollision(Player& p, Player& g)
-{
-	int pl = p.GetX() + 6;
-	int pt = p.GetY() + 9;
-	int pr = p.GetX() + 30;
-	int pb = p.GetY() + 33;
-
-	int gl = g.GetX() + 6;
-	int gt = g.GetY() + 9;
-	int gr = g.GetX() + 30;
-	int gb = g.GetY() + 33;
-
-	if (pl > gr || gl > pr)
-		return false;
-
-	if (pb < gt || gb < pt)
-		return false;
-
-	return true;
-}
+#endif
