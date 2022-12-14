@@ -22,17 +22,30 @@ public:
 	void SetAttack(bool next) { attack = next; };
 	bool GetDir() { return dir; };
 	void SetDir(bool next) { dir = next; }
-	bool Touch(Player& obj);
+	
+	int GetFrameCount() { return _frameCount; }
+	void SetFrameCount(int next) { _frameCount = next; }
+	int GetCurFrame() { return _curFrame; }
+	void SetCurFrame(int next) { _curFrame = next; }
+
+	int GetMove() { return _move; }
+	void SetMove(int next) { _move = next; }
+
+	void SetSpeend(int next) { speed = next; }
+	
 	std::vector<ALLEGRO_BITMAP*> GetAnnimation(const int state);
 
 	Player& operator=(const Player& obj);
 protected:
 	int x;
 	int y;
-	int speed = 5;
+	int speed = 2; // 5
 	int state = 3; // 0 = hurt, 1 = move, 2 = speed, 3 = stand
 	bool attack;
+	int _frameCount = 0;
+	int _curFrame = 0;
 	bool dir = false; // 0 = left, 1 = right
+	int _move;
 	std::string directory;
 
 	void populateAnnimation(std::string place, bool ghost);

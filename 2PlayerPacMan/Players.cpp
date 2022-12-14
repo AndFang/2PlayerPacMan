@@ -1,9 +1,5 @@
 #include "Players.h"
 
-bool Player::Touch(Player& obj)
-{
-	return false;
-}
 
 std::vector<ALLEGRO_BITMAP*> Player::GetAnnimation(const int next)
 {
