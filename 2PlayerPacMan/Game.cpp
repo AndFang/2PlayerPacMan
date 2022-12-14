@@ -148,11 +148,11 @@ Game::~Game()
 	al_uninstall_audio();
 	al_destroy_timer(timer);
 	// DESTROY BITMAPS
-	al_destroy_sample(music);
-	al_destroy_sample(chase);
-	al_destroy_sample(countdown);
-	al_destroy_sample(death);
-	al_destroy_sample(end);
+	//al_destroy_sample(music);
+	//al_destroy_sample(chase);
+	//al_destroy_sample(countdown);
+	//al_destroy_sample(death);
+	//al_destroy_sample(end);
 }
 
 void Game::run()
@@ -242,6 +242,7 @@ void Game::run()
 	al_play_sample(end, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, bm);
 	ALLEGRO_BITMAP* over = al_load_bitmap("Assets/Game/over1.png");
 	ALLEGRO_BITMAP* exit = al_load_bitmap("Assets/Game/exit.png");
+	ALLEGRO_FONT* font36 = al_load_font("Assets/PixalFont.ttf", 36, 0);
 
 	al_play_sample(thump, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 	al_draw_bitmap(over, 380, 200, 0);
@@ -249,8 +250,15 @@ void Game::run()
 	al_rest(1.5);
 
 	al_play_sample(thump, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+	std::string score = "Final Score: " + std::to_string(_pts);
+	al_draw_text(font36, al_map_rgb(0, 0, 0), 420, 330, 0, score.c_str());
+	al_flip_display();
+	al_rest(1.5);
+
+	al_play_sample(thump, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 	al_draw_scaled_bitmap(exit, 0, 0, al_get_bitmap_width(exit), al_get_bitmap_height(exit), 280, 420, 760, 30, 0);
 	al_flip_display();
+
 	bool space = true;
 	ALLEGRO_EVENT event;
 	ALLEGRO_KEYBOARD_STATE keyState;
